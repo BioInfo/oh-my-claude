@@ -96,6 +96,17 @@ export function createHookRegistry(context: HookContext): HookRegistry {
   });
 
   registry.register({
+    name: 'star-prompt',
+    event: 'session-start',
+    description: 'Prompts user to star the repository',
+    priority: 99,
+    handler: async (_data, ctx) => {
+      const { starPromptHook } = await import('../hooks/star-prompt.js');
+      return starPromptHook(_data, ctx);
+    },
+  });
+
+  registry.register({
     name: 'keyword-detector',
     event: 'message',
     description: 'Detects ultrawork/ulw keywords',

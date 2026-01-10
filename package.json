@@ -56,12 +56,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/[ORG]/oh-my-claude.git"
+    "url": "https://github.com/justinbjohnson/oh-my-claude.git"
   },
   "bugs": {
-    "url": "https://github.com/[ORG]/oh-my-claude/issues"
+    "url": "https://github.com/justinbjohnson/oh-my-claude/issues"
   },
-  "homepage": "https://github.com/[ORG]/oh-my-claude#readme",
+  "homepage": "https://github.com/justinbjohnson/oh-my-claude#readme",
   "claudePlugin": {
     "apiVersion": "1.0",
     "capabilities": [

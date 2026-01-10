@@ -30,7 +30,7 @@ Transform sequential execution into parallel orchestration with persistent state
 
 ```bash
 # Clone and build
-git clone https://github.com/[ORG]/oh-my-claude.git
+git clone https://github.com/justinbjohnson/oh-my-claude.git
 cd oh-my-claude
 npm install
 npm run build
@@ -230,8 +230,8 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for developer setup.
 
 ## Support & Resources
 
-- **Issues:** https://github.com/[ORG]/oh-my-claude/issues
-- **Discussions:** https://github.com/[ORG]/oh-my-claude/discussions
+- **Issues:** https://github.com/justinbjohnson/oh-my-claude/issues
+- **Discussions:** https://github.com/justinbjohnson/oh-my-claude/discussions
 - **Claude Code Docs:** https://docs.claude.com/claude-code
 - **Messages API:** https://docs.anthropic.com/claude/reference/messages
 - **Agent SDK:** https://github.com/anthropics/anthropic-sdk-typescript

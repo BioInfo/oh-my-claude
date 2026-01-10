@@ -303,5 +303,5 @@ After successful testing:
 
 ## Support
 
-- **Issues:** https://github.com/[ORG]/oh-my-claude/issues
-- **Discussions:** https://github.com/[ORG]/oh-my-claude/discussions
+- **Issues:** https://github.com/justinbjohnson/oh-my-claude/issues
+- **Discussions:** https://github.com/justinbjohnson/oh-my-claude/discussions

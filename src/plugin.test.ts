@@ -53,10 +53,11 @@ describe('Plugin Integration', () => {
 
   it('should register hooks', () => {
     const hooks = plugin.hooks.list();
-    expect(hooks.length).toBe(3);
+    expect(hooks.length).toBe(4);
 
     const names = hooks.map(h => h.name);
     expect(names).toContain('boulder-resume');
+    expect(names).toContain('star-prompt');
     expect(names).toContain('keyword-detector');
     expect(names).toContain('completion-enforcer');
   });
