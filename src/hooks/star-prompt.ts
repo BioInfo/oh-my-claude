@@ -6,7 +6,7 @@
 import type { HookContext } from '../registry/hooks.js';
 
 const STAR_PROMPT_SHOWN_KEY = 'oh-my-claude-star-prompt-shown';
-const GITHUB_REPO = 'https://github.com/justinbjohnson/oh-my-claude';
+const GITHUB_REPO = 'https://github.com/bioinfo/oh-my-claude';
 
 /**
  * Check if star prompt was already shown in this session
