@@ -106,10 +106,9 @@ export async function handleMessage(
     projectRoot: plugin.projectRoot,
   });
 
-  // Return the first non-empty result
   for (const result of results) {
-    if (result && typeof result === 'object') {
-      return result as any;
+    if (result && typeof result === 'object' && 'inject' in result) {
+      return result as { inject?: string; metadata?: Record<string, unknown> };
     }
   }
 

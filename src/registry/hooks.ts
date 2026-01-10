@@ -26,8 +26,10 @@ export interface HookDefinition {
   event: HookEvent;
   description: string;
   handler: HookHandler;
-  priority?: number; // Lower number = higher priority
+  priority?: number;
 }
+
+const DEFAULT_PRIORITY = 100;
 
 export class HookRegistry {
   private hooks: Map<HookEvent, HookDefinition[]> = new Map();
@@ -38,10 +40,7 @@ export class HookRegistry {
   register(hook: HookDefinition): void {
     const existing = this.hooks.get(hook.event) || [];
     existing.push(hook);
-
-    // Sort by priority
-    existing.sort((a, b) => (a.priority || 100) - (b.priority || 100));
-
+    existing.sort((a, b) => (a.priority || DEFAULT_PRIORITY) - (b.priority || DEFAULT_PRIORITY));
     this.hooks.set(hook.event, existing);
   }
 
@@ -75,12 +74,7 @@ export class HookRegistry {
     if (event) {
       return this.hooks.get(event) || [];
     }
-
-    const all: HookDefinition[] = [];
-    for (const hooks of this.hooks.values()) {
-      all.push(...hooks);
-    }
-    return all;
+    return Array.from(this.hooks.values()).flat();
   }
 }
 
@@ -90,7 +84,6 @@ export class HookRegistry {
 export function createHookRegistry(context: HookContext): HookRegistry {
   const registry = new HookRegistry();
 
-  // Session Start Hook - Boulder Resume
   registry.register({
     name: 'boulder-resume',
     event: 'session-start',
@@ -98,23 +91,21 @@ export function createHookRegistry(context: HookContext): HookRegistry {
     priority: 10,
     handler: async (_data, ctx) => {
       const { boulderResumeHook } = await import('../hooks/boulder-resume.js');
-      return boulderResumeHook(ctx as any);
+      return boulderResumeHook(ctx);
     },
   });
 
-  // Message Hook - Keyword Detector
   registry.register({
     name: 'keyword-detector',
     event: 'message',
     description: 'Detects ultrawork/ulw keywords',
     priority: 5,
-    handler: async (data: any, ctx) => {
+    handler: async (data, ctx) => {
       const { onMessage } = await import('../hooks/keyword-detector.js');
-      return onMessage(data, ctx as any);
+      return onMessage(data as { role: string; content: string }, ctx);
     },
   });
 
-  // Idle Hook - Completion Enforcer
   registry.register({
     name: 'completion-enforcer',
     event: 'idle',
@@ -122,7 +113,7 @@ export function createHookRegistry(context: HookContext): HookRegistry {
     priority: 1,
     handler: async (_data, ctx) => {
       const { completionEnforcerHook } = await import('../hooks/completion-enforcer.js');
-      return completionEnforcerHook(ctx as any);
+      return completionEnforcerHook(ctx);
     },
   });
 

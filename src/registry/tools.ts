@@ -19,7 +19,7 @@ export interface ToolDefinition {
   description: string;
   category: 'lsp' | 'ast' | 'grep' | 'state';
   parameters: ToolParameter[];
-  handler: (...args: unknown[]) => Promise<unknown>;
+  handler: (params: Record<string, unknown>) => Promise<unknown>;
 }
 
 export class ToolRegistry {
@@ -76,203 +76,164 @@ export class ToolRegistry {
   }
 }
 
-/**
- * Create and populate the default tool registry
- */
+function createFilePathParam(): ToolParameter {
+  return {
+    name: 'filePath',
+    type: 'string',
+    description: 'Path to the file',
+    required: true,
+  };
+}
+
+function createPositionParam(): ToolParameter {
+  return {
+    name: 'position',
+    type: 'object',
+    description: 'Position in the file',
+    required: true,
+  };
+}
+
+function registerLSPTools(registry: ToolRegistry, lspClient: LSPClient): void {
+  registry.register({
+    name: 'lsp_hover',
+    description: 'Get hover information at a specific position',
+    category: 'lsp',
+    parameters: [createFilePathParam(), createPositionParam()],
+    handler: async (params) => {
+      return lspClient.hover(
+        params.filePath as string,
+        params.position as Position
+      );
+    },
+  });
+
+  registry.register({
+    name: 'lsp_goto_definition',
+    description: 'Go to symbol definition',
+    category: 'lsp',
+    parameters: [createFilePathParam(), createPositionParam()],
+    handler: async (params) => {
+      return lspClient.gotoDefinition(
+        params.filePath as string,
+        params.position as Position
+      );
+    },
+  });
+
+  registry.register({
+    name: 'lsp_find_references',
+    description: 'Find all references to a symbol',
+    category: 'lsp',
+    parameters: [
+      createFilePathParam(),
+      createPositionParam(),
+      {
+        name: 'includeDeclaration',
+        type: 'boolean',
+        description: 'Include declaration in results',
+        required: false,
+        default: false,
+      },
+    ],
+    handler: async (params) => {
+      return lspClient.findReferences(
+        params.filePath as string,
+        params.position as Position,
+        params.includeDeclaration as boolean
+      );
+    },
+  });
+
+  registry.register({
+    name: 'lsp_document_symbols',
+    description: 'Get all symbols in a document',
+    category: 'lsp',
+    parameters: [createFilePathParam()],
+    handler: async (params) => {
+      return lspClient.documentSymbols(params.filePath as string);
+    },
+  });
+
+  registry.register({
+    name: 'lsp_workspace_symbols',
+    description: 'Search for symbols across workspace',
+    category: 'lsp',
+    parameters: [
+      {
+        name: 'query',
+        type: 'string',
+        description: 'Symbol search query',
+        required: true,
+      },
+    ],
+    handler: async (params) => {
+      return lspClient.workspaceSymbols(params.query as string);
+    },
+  });
+
+  registry.register({
+    name: 'lsp_diagnostics',
+    description: 'Get diagnostics (errors/warnings)',
+    category: 'lsp',
+    parameters: [createFilePathParam()],
+    handler: async (params) => {
+      return lspClient.diagnostics(params.filePath as string);
+    },
+  });
+
+  registry.register({
+    name: 'lsp_rename',
+    description: 'Rename a symbol',
+    category: 'lsp',
+    parameters: [
+      createFilePathParam(),
+      createPositionParam(),
+      {
+        name: 'newName',
+        type: 'string',
+        description: 'New symbol name',
+        required: true,
+      },
+    ],
+    handler: async (params) => {
+      return lspClient.rename(
+        params.filePath as string,
+        params.position as Position,
+        params.newName as string
+      );
+    },
+  });
+
+  registry.register({
+    name: 'lsp_code_actions',
+    description: 'Get available code actions',
+    category: 'lsp',
+    parameters: [
+      createFilePathParam(),
+      {
+        name: 'range',
+        type: 'object',
+        description: 'Range in the file',
+        required: true,
+      },
+    ],
+    handler: async (params) => {
+      return lspClient.codeActions(
+        params.filePath as string,
+        params.range as Range
+      );
+    },
+  });
+}
+
 export function createToolRegistry(lspClient?: LSPClient): ToolRegistry {
   const registry = new ToolRegistry();
 
-  // LSP Tools
   if (lspClient) {
-    registry.register({
-      name: 'lsp_hover',
-      description: 'Get hover information at a specific position',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'filePath',
-          type: 'string',
-          description: 'Path to the file',
-          required: true,
-        },
-        {
-          name: 'position',
-          type: 'object',
-          description: 'Position in the file (line, character)',
-          required: true,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.hover(params.filePath, params.position as Position);
-      },
-    });
-
-    registry.register({
-      name: 'lsp_goto_definition',
-      description: 'Go to symbol definition',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'filePath',
-          type: 'string',
-          description: 'Path to the file',
-          required: true,
-        },
-        {
-          name: 'position',
-          type: 'object',
-          description: 'Position in the file',
-          required: true,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.gotoDefinition(params.filePath, params.position as Position);
-      },
-    });
-
-    registry.register({
-      name: 'lsp_find_references',
-      description: 'Find all references to a symbol',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'filePath',
-          type: 'string',
-          description: 'Path to the file',
-          required: true,
-        },
-        {
-          name: 'position',
-          type: 'object',
-          description: 'Position in the file',
-          required: true,
-        },
-        {
-          name: 'includeDeclaration',
-          type: 'boolean',
-          description: 'Include declaration in results',
-          required: false,
-          default: false,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.findReferences(
-          params.filePath,
-          params.position as Position,
-          params.includeDeclaration as boolean
-        );
-      },
-    });
-
-    registry.register({
-      name: 'lsp_document_symbols',
-      description: 'Get all symbols in a document',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'filePath',
-          type: 'string',
-          description: 'Path to the file',
-          required: true,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.documentSymbols(params.filePath);
-      },
-    });
-
-    registry.register({
-      name: 'lsp_workspace_symbols',
-      description: 'Search for symbols across workspace',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'query',
-          type: 'string',
-          description: 'Symbol search query',
-          required: true,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.workspaceSymbols(params.query as string);
-      },
-    });
-
-    registry.register({
-      name: 'lsp_diagnostics',
-      description: 'Get diagnostics (errors/warnings)',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'filePath',
-          type: 'string',
-          description: 'Path to the file',
-          required: true,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.diagnostics(params.filePath);
-      },
-    });
-
-    registry.register({
-      name: 'lsp_rename',
-      description: 'Rename a symbol',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'filePath',
-          type: 'string',
-          description: 'Path to the file',
-          required: true,
-        },
-        {
-          name: 'position',
-          type: 'object',
-          description: 'Position in the file',
-          required: true,
-        },
-        {
-          name: 'newName',
-          type: 'string',
-          description: 'New symbol name',
-          required: true,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.rename(
-          params.filePath,
-          params.position as Position,
-          params.newName as string
-        );
-      },
-    });
-
-    registry.register({
-      name: 'lsp_code_actions',
-      description: 'Get available code actions',
-      category: 'lsp',
-      parameters: [
-        {
-          name: 'filePath',
-          type: 'string',
-          description: 'Path to the file',
-          required: true,
-        },
-        {
-          name: 'range',
-          type: 'object',
-          description: 'Range in the file',
-          required: true,
-        },
-      ],
-      handler: async (params: any) => {
-        return lspClient.codeActions(params.filePath, params.range as Range);
-      },
-    });
+    registerLSPTools(registry, lspClient);
   }
 
-  // AST-Grep Tools
   registry.register({
     name: 'ast_grep_search',
     description: 'Search code using AST patterns',
@@ -297,7 +258,7 @@ export function createToolRegistry(lspClient?: LSPClient): ToolRegistry {
         required: false,
       },
     ],
-    handler: async (params: any) => {
+    handler: async (params) => {
       const { astGrepSearch } = await import('../tools/ast/index.js');
       return astGrepSearch(params);
     },
@@ -327,13 +288,12 @@ export function createToolRegistry(lspClient?: LSPClient): ToolRegistry {
         required: false,
       },
     ],
-    handler: async (params: any) => {
+    handler: async (params) => {
       const { astGrepReplace } = await import('../tools/ast/index.js');
       return astGrepReplace(params);
     },
   });
 
-  // Grep Tools
   registry.register({
     name: 'grep_search',
     description: 'Search code using grep/ripgrep',
@@ -365,7 +325,7 @@ export function createToolRegistry(lspClient?: LSPClient): ToolRegistry {
         required: false,
       },
     ],
-    handler: async (params: any) => {
+    handler: async (params) => {
       const { grep } = await import('../tools/grep/index.js');
       return grep(params);
     },
@@ -390,9 +350,10 @@ export function createToolRegistry(lspClient?: LSPClient): ToolRegistry {
         default: '.',
       },
     ],
-    handler: async (params: any) => {
+    handler: async (params) => {
       const { findFiles } = await import('../tools/grep/index.js');
-      return findFiles(params.pattern, params.path || '.');
+      const searchPath = (params.path as string | undefined) || '.';
+      return findFiles(params.pattern as string, searchPath);
     },
   });
 

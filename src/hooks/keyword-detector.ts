@@ -31,14 +31,8 @@ export async function detectKeywords(
 
   for (const keyword of keywords) {
     if (text.includes(keyword)) {
-      // Determine mode based on keyword
       const mode = keyword === '@plan' ? 'planning' : 'orchestration';
-
-      return {
-        detected: true,
-        keyword,
-        mode,
-      };
+      return { detected: true, keyword, mode };
     }
   }
 
@@ -62,7 +56,6 @@ export async function onMessage(
     return {};
   }
 
-  // Inject instructions based on mode
   if (result.mode === 'planning') {
     return {
       inject: `
@@ -86,10 +79,10 @@ Task(description="Create implementation plan", prompt="Create a comprehensive pl
         keyword: result.keyword,
       },
     };
-  } else {
-    // Orchestration mode
-    return {
-      inject: `
+  }
+
+  return {
+    inject: `
 [ORCHESTRATION MODE: ULTRAWORK]
 
 Keyword detected: ${result.keyword}
@@ -122,10 +115,9 @@ Specialist agents:
 
 Start by spawning Seer if you need a plan, or Warden if you have one.
 `.trim(),
-      metadata: {
-        orchestrationMode: 'ultrawork',
-        keyword: result.keyword,
-      },
-    };
-  }
+    metadata: {
+      orchestrationMode: 'ultrawork',
+      keyword: result.keyword,
+    },
+  };
 }
