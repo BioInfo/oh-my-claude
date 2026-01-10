@@ -1,0 +1,118 @@
+{
+  "$schema": "https://code.claude.com/schemas/plugin-manifest.json",
+  "name": "@oh-my-claude/plugin",
+  "version": "0.1.0",
+  "displayName": "Oh My Claude",
+  "description": "Multi-agent orchestration plugin with LSP, AST-grep, and persistent state management",
+  "author": "Justin Johnson",
+  "license": "MIT",
+  "apiVersion": "1.0",
+  "main": "dist/index.js",
+  "capabilities": {
+    "tools": true,
+    "hooks": true,
+    "agents": true,
+    "state": true
+  },
+  "tools": [
+    {
+      "name": "lsp_hover",
+      "description": "Get hover information at a specific position"
+    },
+    {
+      "name": "lsp_goto_definition",
+      "description": "Go to symbol definition"
+    },
+    {
+      "name": "lsp_find_references",
+      "description": "Find all references to a symbol"
+    },
+    {
+      "name": "lsp_document_symbols",
+      "description": "Get all symbols in a document"
+    },
+    {
+      "name": "lsp_workspace_symbols",
+      "description": "Search for symbols across workspace"
+    },
+    {
+      "name": "lsp_diagnostics",
+      "description": "Get diagnostics (errors/warnings)"
+    },
+    {
+      "name": "lsp_prepare_rename",
+      "description": "Check if rename is valid"
+    },
+    {
+      "name": "lsp_rename",
+      "description": "Rename a symbol"
+    },
+    {
+      "name": "lsp_code_actions",
+      "description": "Get available code actions"
+    },
+    {
+      "name": "lsp_code_action_resolve",
+      "description": "Resolve a code action"
+    },
+    {
+      "name": "lsp_servers",
+      "description": "Manage LSP servers"
+    },
+    {
+      "name": "ast_grep_search",
+      "description": "Search code using AST patterns"
+    },
+    {
+      "name": "ast_grep_replace",
+      "description": "Replace code using AST patterns"
+    }
+  ],
+  "hooks": [
+    {
+      "name": "keyword-detector",
+      "events": ["message"],
+      "description": "Detects ultrawork/ulw keywords and activates orchestration mode"
+    },
+    {
+      "name": "completion-enforcer",
+      "events": ["idle"],
+      "description": "Ensures tasks complete by checking boulder state"
+    },
+    {
+      "name": "boulder-resume",
+      "events": ["session-start"],
+      "description": "Resumes incomplete work from previous sessions"
+    }
+  ],
+  "configuration": {
+    "type": "object",
+    "properties": {
+      "lsp.enabled": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable LSP tools"
+      },
+      "astGrep.enabled": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable AST-grep tools"
+      },
+      "orchestration.defaultModel": {
+        "type": "string",
+        "default": "claude-sonnet-4-5",
+        "description": "Default model for orchestration agents"
+      },
+      "boulder.enabled": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable boulder state persistence"
+      },
+      "boulder.path": {
+        "type": "string",
+        "default": ".keepers",
+        "description": "Directory for boulder state files"
+      }
+    }
+  }
+}

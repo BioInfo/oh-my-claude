@@ -1,0 +1,40 @@
+MIT License
+
+Copyright (c) 2026 Justin Johnson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Attribution
+
+This project incorporates code and concepts from:
+
+1. **oh-my-opencode** by code-yeongyu
+   - Orchestration philosophy and patterns
+   - MIT License
+   - https://github.com/code-yeongyu/oh-my-opencode
+
+2. **oh-my-claude-sisyphus** by Yeachan-Heo
+   - LSP client implementation (src/tools/lsp/)
+   - AST-grep integration patterns
+   - MIT License
+   - https://github.com/Yeachan-Heo/oh-my-claude-sisyphus
+
+Special thanks to both projects for their innovative work in AI agent orchestration.

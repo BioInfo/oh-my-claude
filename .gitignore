@@ -1,0 +1,218 @@
+# Oh My Claude - Comprehensive .gitignore
+
+# ============================================================================
+# Node.js & Package Managers
+# ============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.npm
+.yarn-integrity
+.pnp
+.pnp.js
+
+# ============================================================================
+# Build Artifacts
+# ============================================================================
+dist/
+build/
+out/
+*.tsbuildinfo
+.cache/
+.turbo/
+
+# ============================================================================
+# Test & Coverage
+# ============================================================================
+coverage/
+.nyc_output/
+*.lcov
+.test-*
+test-results/
+playwright-report/
+e2e-results/
+
+# ============================================================================
+# Environment & Secrets
+# ============================================================================
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env*.local
+*.key
+*.pem
+secrets/
+.secrets/
+
+# ============================================================================
+# IDE & Editors
+# ============================================================================
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+
+# JetBrains (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+.fleet/
+
+# Vim
+*.swp
+*.swo
+*~
+.vim/
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ============================================================================
+# OS Files
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# ============================================================================
+# Logs
+# ============================================================================
+logs/
+*.log
+log-*.txt
+*.log.*
+pids/
+*.pid
+*.seed
+*.pid.lock
+lib-cov/
+
+# ============================================================================
+# Oh My Claude Specific
+# ============================================================================
+# Boulder state (except in examples for demo purposes)
+.keepers/
+!examples/**/.keepers/
+
+# Backups
+*.backup.*
+.backup/
+
+# Session data
+.sessions/
+
+# ============================================================================
+# Docker
+# ============================================================================
+.docker/
+docker-compose.override.yml
+
+# ============================================================================
+# Temporary Files
+# ============================================================================
+*.tmp
+*.temp
+tmp/
+temp/
+.tmp/
+.temp/
+
+# ============================================================================
+# Debug Files
+# ============================================================================
+*.cpuprofile
+*.heapsnapshot
+.vscode-test/
+
+# ============================================================================
+# Optional: Dependency Directories (uncomment if needed)
+# ============================================================================
+# jspm_packages/
+# typings/
+# bower_components/
+
+# ============================================================================
+# Optional: TypeScript Cache (uncomment if needed)
+# ============================================================================
+# *.tsbuildinfo
+
+# ============================================================================
+# Optional: ESLint Cache (uncomment if needed)
+# ============================================================================
+# .eslintcache
+
+# ============================================================================
+# Optional: Prettier Cache (uncomment if needed)
+# ============================================================================
+# .prettiercache
+
+# ============================================================================
+# Keep These Files (Exceptions)
+# ============================================================================
+# Example .keepers directory should be kept
+!examples/typescript-project/.keepers/
+!examples/**/.keepers/boulder.json
+!examples/**/.keepers/plans/
+
+# Documentation should be kept
+!docs/**
+!*.md
+
+# Config files should be kept
+!tsconfig.json
+!package.json
+!package-lock.json
+!.npmrc

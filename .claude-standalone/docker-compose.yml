@@ -1,0 +1,19 @@
+services:
+  oh-my-claude:
+    build:
+      context: ..
+      dockerfile: .claude-standalone/Dockerfile
+    container_name: oh-my-claude-test
+    volumes:
+      - ../examples:/workspace/examples
+      - test-data:/workspace/.keepers
+    working_dir: /workspace/examples/typescript-project
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=development
+    command: /bin/bash
+
+volumes:
+  test-data:
+    driver: local
