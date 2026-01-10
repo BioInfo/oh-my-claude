@@ -154,6 +154,13 @@ lib-cov/
 # Session data
 .sessions/
 
+# Internal documentation and development files
+docs/
+CLAUDE.md
+AGENTS.md
+PUBLISH.md
+scripts/create-github-repo.sh
+
 # ============================================================================
 # Docker
 # ============================================================================
