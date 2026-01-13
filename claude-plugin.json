@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "displayName": "Oh My Claude",
   "description": "Multi-agent orchestration plugin with LSP, AST-grep, and persistent state management",
-  "author": "Justin Johnson",
+  "author": "BioInfo <https://github.com/BioInfo>",
   "license": "MIT",
   "apiVersion": "1.0",
   "main": "dist/index.js",
